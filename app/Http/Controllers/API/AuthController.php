@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Events\UserRegistred;
+use App\Events\User\UserRegistred;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Exception;
@@ -11,6 +11,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 
 /*
@@ -73,7 +74,7 @@ class AuthController extends Controller implements AuthInterface
 
                 Auth::login($user);
 
-                $token = $user->createToken()->plainTextToken;
+                $token = $user->createToken(Str::random(30))->plainTextToken;
 
                 return $this->sendResponseOk("Successfully logged in", [
                     'token' => $token,

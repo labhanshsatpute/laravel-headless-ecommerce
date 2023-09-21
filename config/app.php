@@ -185,4 +185,20 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Default Administrator Acccount Credentials
+    |--------------------------------------------------------------------------
+    |
+    | This will help to set defulat admin profile.
+    |
+    */
+
+    'admin' => [
+        'name' => env('DEFAULT_ADMIN_NAME'),
+        'email' => env('DEFAULT_ADMIN_EMAIL'),
+        'phone' => env('DEFAULT_ADMIN_PHONE'),
+        'password' => env('DEFAULT_ADMIN_PASSWORD'),
+    ]
+
 ];

@@ -11,16 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payment_transactions', function (Blueprint $table) {
+        Schema::create('order_status_histories', function (Blueprint $table) {
             $table->bigIncrements('id')->from(100001);
-            $table->foreignId('user_id')->references('id')->on('users');
             $table->foreignId('order_id')->references('id')->on('orders');
-            $table->string('gateway');
-            $table->string('token')->unique();
-            $table->string('status')->default('PENDING');
-            $table->string('transaction_id')->nullable();
+            $table->string('status');
+            $table->text('remark')->nullable();
             $table->json('meta_data')->nullable();
-            $table->double('amount',13,2);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -31,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payment_transactions');
+        Schema::dropIfExists('order_status_histories');
     }
 };
