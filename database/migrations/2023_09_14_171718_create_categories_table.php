@@ -18,9 +18,10 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('summary')->nullable();
             $table->longText('description')->nullable();
-            $table->string('thumbnail');
-            $table->string('cover_image');
+            $table->string('thumbnail')->nullable();
+            $table->string('cover_image')->nullable();
             $table->boolean('status')->default(true);
+            $table->integer('priority')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
