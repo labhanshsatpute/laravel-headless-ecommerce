@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('ref_no')->unique();
             $table->foreignId('user_id')->references('id')->on('users');
             $table->string('name');
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->string('phone_primary')->nullable();
             $table->string('phone_alternate')->nullable();
             $table->string('home')->nullable();
