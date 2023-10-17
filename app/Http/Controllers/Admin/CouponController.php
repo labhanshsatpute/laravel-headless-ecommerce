@@ -123,7 +123,7 @@ class CouponController extends Controller implements CouponInterface
     {
         try {
 
-            $validation = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'min:1', 'max:250', 'unique:coupons'],
                 'code' => ['required', 'string', 'min:1', 'max:500', 'unique:coupons'],
                 'summary' => ['nullable', 'string', 'min:1', 'max:500'],
@@ -135,8 +135,8 @@ class CouponController extends Controller implements CouponInterface
                 'maximum_discount' => ['required', 'numeric', 'min:0']
             ]);
 
-            if ($validation->fails()) {
-                return redirect()->back()->withErrors($validation)->withInput();
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
             }
 
             $coupon = new Coupon();
@@ -184,7 +184,7 @@ class CouponController extends Controller implements CouponInterface
                 ]);
             }
 
-            $validation = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), [
                 'name' => [
                     'required', 'string', 'min:1', 'max:250',
                     Rule::unique('coupons')->ignore($coupon->name, 'name')
@@ -202,8 +202,8 @@ class CouponController extends Controller implements CouponInterface
                 'maximum_discount' => ['required', 'numeric', 'min:0']
             ]);
 
-            if ($validation->fails()) {
-                return redirect()->back()->withErrors($validation)->withInput();
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
             }
 
             $coupon->name = $request->input('name');
@@ -240,15 +240,15 @@ class CouponController extends Controller implements CouponInterface
     {
         try {
 
-            $validation = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), [
                 'coupon_id' => ['required', 'numeric', 'exists:coupons,id']
             ]);
 
-            if ($validation->fails()) {
+            if ($validator->fails()) {
                 return response([
                     'status' => false,
-                    'message' => $validation->errors()->first(),
-                    'error' => $validation->errors()->getMessages()
+                    'message' => $validator->errors()->first(),
+                    'error' => $validator->errors()->getMessages()
                 ], 200);
             }
 
