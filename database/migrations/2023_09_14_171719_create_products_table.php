@@ -23,7 +23,7 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->json('tags')->nullable();
             $table->json('highlights')->nullable();
-            $table->json('variants')->nullable();
+            $table->string('color')->nullable();
             $table->string('meta_title')->nullable();
             $table->text('meta_keywords')->nullable();
             $table->longText('meta_description')->nullable();
