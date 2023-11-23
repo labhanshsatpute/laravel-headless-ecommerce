@@ -14,13 +14,18 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        if (Admin::where('email', config('app.admin.email'))->where('phone', config('app.admin.phone'))->doesntExist()) {
-            Admin::insert([
-                'name' => config('app.admin.name'),
-                'email' => config('app.admin.email'),
-                'phone' => config('app.admin.phone'),
-                'password' => Hash::make(config('app.admin.password'))
-            ]);
+        $admin_dosent_exists = Admin::where('email', config('app.admin.email'))
+            ->where('phone', config('app.admin.phone'))
+            ->doesntExist();
+
+        if ($$admin_dosent_exists) {
+            $admin = new Admin();
+            $admin->name = config('app.admin.name');
+            $admin->email = config('app.admin.email');
+            $admin->phone = config('app.admin.phone');
+            $admin->password = Hash::make(config('app.admin.password'));
+            $admin->generateAdminProfile();
+            $admin->save();
         }
     }
 }

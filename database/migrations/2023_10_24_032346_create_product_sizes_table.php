@@ -15,8 +15,8 @@ return new class extends Migration
             $table->bigIncrements('id')->from(100001);
             $table->foreignId('product_id')->references('id')->on('products');
             $table->string('size')->nullable();
-            $table->double('price_original', 13,2);
-            $table->double('price_discounted', 13,2)->nullable();
+            $table->decimal('price_original', 13,2);
+            $table->decimal('price_discounted', 13,2)->nullable();
             $table->timestamps();
         });
     }

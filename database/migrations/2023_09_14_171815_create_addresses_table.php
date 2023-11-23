@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->bigIncrements('id')->from(100001);
-            $table->uuid('ref_id')->nullable();
+            $table->uuid('uuid');
             $table->foreignId('user_id')->references('id')->on('users');
             $table->string('name');
             $table->string('email');

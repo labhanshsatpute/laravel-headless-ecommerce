@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('payment_transactions', function (Blueprint $table) {
             $table->bigIncrements('id')->from(100001);
+            $table->uuid('uuid');
             $table->foreignId('user_id')->references('id')->on('users');
             $table->foreignId('order_id')->references('id')->on('orders');
             $table->string('gateway');
-            $table->string('token')->unique();
             $table->string('status')->default('PENDING');
             $table->string('transaction_id')->nullable();
             $table->json('meta_data')->nullable();
-            $table->double('amount',13,2);
+            $table->decimal('amount',13,2);
             $table->timestamps();
             $table->softDeletes();
         });

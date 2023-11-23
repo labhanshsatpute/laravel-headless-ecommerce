@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignId('product_id')->references('id')->on('products');
             $table->integer('quantity');
             $table->string('size')->nullable();
-            $table->double('unit_price', 13, 2);
-            $table->double('total', 13, 2);
+            $table->decimal('unit_price', 13, 2);
+            $table->decimal('total', 13, 2);
             $table->timestamps();
             $table->softDeletes();
         });

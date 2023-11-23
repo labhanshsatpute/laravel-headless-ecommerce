@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('verification_otps', function (Blueprint $table) {
             $table->bigIncrements('id')->from(100001);
             $table->morphs('referable');
-            $table->string('type');
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
             $table->string('otp');
             $table->string('token');
             $table->integer('attempt')->default(0);

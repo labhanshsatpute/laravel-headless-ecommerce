@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id')->from(100001);
-            $table->uuid('ref_id')->nullable()->unique();
+            $table->uuid('uuid');
             $table->string('ref_no')->unique();
             $table->foreignId('user_id')->references('id')->on('users');
             $table->string('name');
@@ -31,12 +31,12 @@ return new class extends Migration
             $table->string('payment_type');
             $table->string('payment_status')->nullable();
             $table->json('meta_data')->nullable();
-            $table->double('gross_amount', 13, 2)->nullable();
-            $table->double('tax_charges', 13, 2)->nullable();
-            $table->double('coupon_discount', 13, 2)->nullable();
-            $table->double('delivery_charges', 13, 2)->nullable();
-            $table->double('cod_charges', 13, 2)->nullable();
-            $table->double('total_amount', 13, 2);
+            $table->decimal('gross_amount', 13, 2)->nullable();
+            $table->decimal('tax_charges', 13, 2)->nullable();
+            $table->decimal('coupon_discount', 13, 2)->nullable();
+            $table->decimal('delivery_charges', 13, 2)->nullable();
+            $table->decimal('cod_charges', 13, 2)->nullable();
+            $table->decimal('total_amount', 13, 2);
             $table->timestamps();
             $table->softDeletes();
         });

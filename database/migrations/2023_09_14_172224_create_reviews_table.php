@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->bigIncrements('id')->from(100001);
+            $table->uuid('uuid');
             $table->foreignId('user_id')->references('id')->on('users');
             $table->foreignId('product_id')->references('id')->on('products');
             $table->foreignId('order_id')->references('id')->on('orders');

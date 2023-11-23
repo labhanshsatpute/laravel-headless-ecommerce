@@ -2097,6 +2097,9 @@ main{
 .mb-\[1px\]{
   margin-bottom: 1px;
 }
+.ml-1{
+  margin-left: 0.25rem;
+}
 .ml-4{
   margin-left: 1rem;
 }
@@ -2106,11 +2109,20 @@ main{
 .mr-2{
   margin-right: 0.5rem;
 }
+.mt-0{
+  margin-top: 0px;
+}
+.mt-0\.5{
+  margin-top: 0.125rem;
+}
 .mt-1{
   margin-top: 0.25rem;
 }
 .mt-16{
   margin-top: 4rem;
+}
+.mt-2{
+  margin-top: 0.5rem;
 }
 .mt-3{
   margin-top: 0.75rem;
@@ -2145,6 +2157,12 @@ main{
 .h-16{
   height: 4rem;
 }
+.h-3{
+  height: 0.75rem;
+}
+.h-3\.5{
+  height: 0.875rem;
+}
 .h-4{
   height: 1rem;
 }
@@ -2178,11 +2196,20 @@ main{
 .h-screen{
   height: 100vh;
 }
+.max-h-\[400px\]{
+  max-height: 400px;
+}
 .min-h-screen{
   min-height: 100vh;
 }
 .w-16{
   width: 4rem;
+}
+.w-3{
+  width: 0.75rem;
+}
+.w-3\.5{
+  width: 0.875rem;
 }
 .w-4{
   width: 1rem;
@@ -2235,6 +2262,11 @@ main{
 .cursor-pointer{
   cursor: pointer;
 }
+.select-none{
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
 .resize{
   resize: both;
 }
@@ -2243,6 +2275,9 @@ main{
 }
 .flex-col{
   flex-direction: column;
+}
+.items-start{
+  align-items: flex-start;
 }
 .items-center{
   align-items: center;
@@ -2262,11 +2297,24 @@ main{
 .gap-4{
   gap: 1rem;
 }
+.gap-5{
+  gap: 1.25rem;
+}
 .gap-6{
   gap: 1.5rem;
 }
 .gap-7{
   gap: 1.75rem;
+}
+.space-x-1 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.25rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
+}
+.space-x-12 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-x-reverse: 0;
+  margin-right: calc(3rem * var(--tw-space-x-reverse));
+  margin-left: calc(3rem * calc(1 - var(--tw-space-x-reverse)));
 }
 .space-x-2 > :not([hidden]) ~ :not([hidden]){
   --tw-space-x-reverse: 0;
@@ -2322,6 +2370,9 @@ main{
 .overflow-clip{
   overflow: clip;
 }
+.overflow-y-auto{
+  overflow-y: auto;
+}
 .whitespace-nowrap{
   white-space: nowrap;
 }
@@ -2340,6 +2391,9 @@ main{
 }
 .border{
   border-width: 1px;
+}
+.border-b{
+  border-bottom-width: 1px;
 }
 .border-r-0{
   border-right-width: 0px;
@@ -4659,6 +4713,11 @@ table.dataTable thead th, table.dataTable thead td {
   background-color: rgb(244 247 254 / var(--tw-bg-opacity));
 }
 
+.hover\:text-ascent-dark:hover{
+  --tw-text-opacity: 1;
+  color: rgb(43 54 116 / var(--tw-text-opacity));
+}
+
 .hover\:text-gray-700:hover{
   --tw-text-opacity: 1;
   color: rgb(55 65 81 / var(--tw-text-opacity));
@@ -4771,12 +4830,20 @@ table.dataTable thead th, table.dataTable thead td {
     position: fixed;
   }
 
+  .sm\:-right-14{
+    right: -3.5rem;
+  }
+
   .sm\:right-0{
     right: 0px;
   }
 
   .sm\:top-0{
     top: 0px;
+  }
+
+  .sm\:col-span-1{
+    grid-column: span 1 / span 1;
   }
 
   .sm\:ml-0{
@@ -4832,6 +4899,10 @@ table.dataTable thead th, table.dataTable thead td {
     justify-content: space-between;
   }
 
+  .sm\:gap-5{
+    gap: 1.25rem;
+  }
+
   .sm\:px-2{
     padding-left: 0.5rem;
     padding-right: 0.5rem;
@@ -4847,6 +4918,18 @@ table.dataTable thead th, table.dataTable thead td {
 }
 
 @media (min-width: 800px){
+
+  .md\:-right-2{
+    right: -0.5rem;
+  }
+
+  .md\:col-span-4{
+    grid-column: span 4 / span 4;
+  }
+
+  .md\:col-span-2{
+    grid-column: span 2 / span 2;
+  }
 
   .md\:block{
     display: block;
@@ -4864,6 +4947,11 @@ table.dataTable thead th, table.dataTable thead td {
     width: auto;
   }
 
+  .md\:w-fit{
+    width: -moz-fit-content;
+    width: fit-content;
+  }
+
   .md\:w-full{
     width: 100%;
   }
@@ -4872,8 +4960,16 @@ table.dataTable thead th, table.dataTable thead td {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .md\:grid-cols-4{
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
   .md\:flex-row{
     flex-direction: row;
+  }
+
+  .md\:gap-7{
+    gap: 1.75rem;
   }
 
   .md\:px-0{
@@ -4887,6 +4983,14 @@ table.dataTable thead th, table.dataTable thead td {
 }
 
 @media (min-width: 1240px){
+
+  .lg\:-right-2{
+    right: -0.5rem;
+  }
+
+  .lg\:col-span-4{
+    grid-column: span 4 / span 4;
+  }
 
   .lg\:block{
     display: block;
@@ -4931,5 +5035,16 @@ table.dataTable thead th, table.dataTable thead td {
   .lg\:px-0{
     padding-left: 0px;
     padding-right: 0px;
+  }
+}
+
+@media (min-width: 1536px){
+
+  .\32xl\:col-span-5{
+    grid-column: span 5 / span 5;
+  }
+
+  .\32xl\:grid-cols-5{
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }

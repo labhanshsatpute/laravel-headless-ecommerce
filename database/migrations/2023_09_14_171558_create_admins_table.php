@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->bigIncrements('id')->from(100001);
+            $table->uuid('uuid');
             $table->string('name');
             $table->string('email')->unique()->nullable();
             $table->string('phone')->unique()->nullable();
             $table->string('gender')->nullable();
-            $table->string('profile')->nullable();
+            $table->string('profile_image')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('phone_verified_at')->nullable();

@@ -13,15 +13,16 @@ return new class extends Migration
     {
         Schema::create('coupons', function (Blueprint $table) {
             $table->bigIncrements('id')->from(100001);
+            $table->uuid('uuid');
             $table->string('name');
             $table->string('code')->unique();
             $table->text('summary')->nullable();
             $table->date('start_date');
             $table->date('expire_date');
             $table->string('discount_type');
-            $table->double('discount_value', 13, 2);
-            $table->double('minimum_purchase', 13, 2);
-            $table->double('maximum_discount', 13, 2);
+            $table->decimal('discount_value', 13, 2);
+            $table->decimal('minimum_purchase', 13, 2);
+            $table->decimal('maximum_discount', 13, 2);
             $table->boolean('status')->default(true);
             $table->timestamps();
             $table->softDeletes();

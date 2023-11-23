@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\CouponDiscountType;
 use App\Http\Controllers\Controller;
-use App\Models\Coupon;
-use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
+use App\Models\Coupon;
+use Exception;
 
 interface CouponInterface
 {
@@ -31,7 +33,7 @@ class CouponController extends Controller implements CouponInterface
      */
     public function __construct()
     {
-        $this->middleware('auth:admin');
+        $this->middleware('auth:admin')->except('logout');
     }
 
     /**
@@ -44,9 +46,11 @@ class CouponController extends Controller implements CouponInterface
         try {
 
             $coupons = Coupon::all();
+            $discount_type = CouponDiscountType::class;
 
             return view('admin.pages.coupon.coupon-list', [
-                'coupons' => $coupons
+                'coupons' => $coupons,
+                'discount_type' => $discount_type
             ]);
         } catch (Exception $exception) {
             return redirect()->back()->with('message', [
@@ -115,17 +119,17 @@ class CouponController extends Controller implements CouponInterface
     }
 
     /**
-     * Create Coupon
+     * Handle Create Coupon
      *
-     * @return mixed
+     * @return RedirectResponse
      */
-    public function handleCouponCreate(Request $request): mixed
+    public function handleCouponCreate(Request $request): RedirectResponse
     {
         try {
 
             $validator = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'min:1', 'max:250', 'unique:coupons'],
-                'code' => ['required', 'string', 'min:1', 'max:500', 'unique:coupons'],
+                'code' => ['required', 'string', 'min:1', 'max:100', 'unique:coupons'],
                 'summary' => ['nullable', 'string', 'min:1', 'max:500'],
                 'start_date' => ['required', 'string', 'date_format:Y-m-d'],
                 'expire_date' => ['required', 'string', 'date_format:Y-m-d'],
@@ -166,11 +170,11 @@ class CouponController extends Controller implements CouponInterface
     }
 
     /**
-     * Update Coupon
+     * Handle Update Coupon
      *
-     * @return mixed
+     * @return RedirectResponse
      */
-    public function handleCouponUpdate(Request $request, $id): mixed
+    public function handleCouponUpdate(Request $request, $id): RedirectResponse
     {
         try {
 
@@ -232,16 +236,16 @@ class CouponController extends Controller implements CouponInterface
     }
 
     /**
-     * Toggle Coupon Status
+     * Handle Toggle Coupon Status
      *
-     * @return mixed
+     * @return Response
      */
-    public function handleToggleCouponStatus(Request $request): mixed
+    public function handleToggleCouponStatus(Request $request): Response
     {
         try {
 
             $validator = Validator::make($request->all(), [
-                'coupon_id' => ['required', 'numeric', 'exists:coupons,id']
+                'id' => ['required', 'numeric', 'exists:coupons']
             ]);
 
             if ($validator->fails()) {
@@ -252,7 +256,7 @@ class CouponController extends Controller implements CouponInterface
                 ], 200);
             }
 
-            $coupon = Coupon::find($request->input('coupon_id'));
+            $coupon = Coupon::find($request->input('id'));
             $coupon->status = !$coupon->status;
             $coupon->update();
 
@@ -271,11 +275,11 @@ class CouponController extends Controller implements CouponInterface
     }
 
     /**
-     * Delete Coupon
+     * Handle Delete Coupon
      *
-     * @return mixed
+     * @return RedirectResponse
      */
-    public function handleCouponDelete($id): mixed
+    public function handleCouponDelete($id): RedirectResponse
     {
         try {
 

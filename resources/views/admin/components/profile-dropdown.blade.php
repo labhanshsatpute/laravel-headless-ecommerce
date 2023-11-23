@@ -15,7 +15,7 @@
 }" x-on:keydown.escape.prevent.stop="close($refs.button)"
     x-on:focusin.window="! $refs.panel.contains($event.target) && close()" x-id="['profile-dropdown-button']">
     <button x-ref="button" x-on:click="toggle()" x-tra type="button" :class="open && 'ring-ascent ring-4'" class="h-[40px] w-[40px] overflow-clip rounded-lg border border-gray-200 mt-1">
-        <img src="{{asset('storage/' . auth()->user()->profile)}}" alt="profile">
+        <img src="{{asset('storage/' . auth()->user()->profile_image)}}" alt="profile">
     </button>
     <div x-ref="panel" x-show="open" x-transition.origin.top.right x-on:click.outside="close($refs.button)"
         :id="$id('profile-dropdown-button')" style="display: none;"
@@ -23,7 +23,7 @@
 
         <button class="flex items-center justify-start w-auto space-x-3">
             <div class="w-[50px] h-[50px] rounded-full border overflow-hidden">
-                <img src="{{ asset('storage/' . auth()->user()->profile) }}" alt="profile"
+                <img src="{{ asset('storage/' . auth()->user()->profile_image) }}" alt="profile"
                     class="h-full w-full" />
             </div>
             <div class="whitespace-nowrap text-left">
@@ -36,7 +36,7 @@
 
         <ul class="flex flex-col space-y-3">
             <li>
-                <a href="{{route('admin.view.setting.account')}}"
+                <a href="{{--route('admin.view.setting.account')--}}"
                     class="text-xs font-medium text-slate-800 hover:text-admin-ascent-dark whitespace-nowrap flex items-center justify-start">
                     <i data-feather="settings" class="mr-2 h-5 w-5"></i> Account Settings
                 </a>

@@ -168,6 +168,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class
     ])->toArray(),
 
     /*
@@ -199,6 +200,17 @@ return [
         'email' => env('DEFAULT_ADMIN_EMAIL'),
         'phone' => env('DEFAULT_ADMIN_PHONE'),
         'password' => env('DEFAULT_ADMIN_PASSWORD'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Currency Symbol & Code
+    |--------------------------------------------------------------------------
+    */
+
+    'currency' => [
+        'symbol' => env('APP_CURRENCY_SYBMOL', '$'),
+        'code' => env('APP_CURRENCY_CODE', 'USD')
     ]
 
 ];

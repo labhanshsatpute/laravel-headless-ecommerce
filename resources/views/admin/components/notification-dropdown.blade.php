@@ -1,69 +1,56 @@
-<div class="relative" x-data="{
-    open: false,
-    toggle() {
-        if (this.open) {
-            return this.close()
+<div class="relative" 
+    x-data="{
+        open: false,
+        toggle() {
+            if (this.open) {
+                return this.close()
+            }
+            this.$refs.button.focus()
+            this.open = true
+        },
+        close(focusAfter) {
+            if (!this.open) return
+            this.open = false
+            focusAfter && focusAfter.focus()
         }
-        this.$refs.button.focus()
-        this.open = true
-    },
-    close(focusAfter) {
-        if (!this.open) return
-        this.open = false
-        focusAfter && focusAfter.focus()
-    }
-}" x-on:keydown.escape.prevent.stop="close($refs.button)"
-    x-on:focusin.window="! $refs.panel.contains($event.target) && close()" x-id="['profile-dropdown-button']">
-    <button x-ref="button" x-on:click="toggle()" x-tra type="button" :class="open && 'ring-ascent ring-4'" class="h-[40px] w-[40px] overflow-clip rounded-full border mt-1">
-        <img src="https://i.pinimg.com/originals/68/16/3e/68163efb3c2201721d8e681cde6aef2b.jpg" alt="img">
-    </button>
-    <div x-ref="panel" x-show="open" x-transition.origin.top.right x-on:click.outside="close($refs.button)"
-        :id="$id('profile-dropdown-button')" style="display: none;"
-        class="absolute -right-2 z-10 mt-3 md:w-auto sm:w-fit origin-top-right rounded-xl bg-white shadow-lg overflow-clip p-5 space-y-5 text-left">
-
-        <button class="flex items-center justify-start w-auto space-x-3">
-            <div class="w-[50px] h-[50px] rounded-full border overflow-hidden">
-                <img src="https://i.pinimg.com/originals/68/16/3e/68163efb3c2201721d8e681cde6aef2b.jpg" alt="profile"
-                    class="h-full w-full" />
-            </div>
-            <div class="whitespace-nowrap text-left">
-                <h1 class="font-semibold text-base mb-[1px]">{{auth()->user()->name}}</h1>
-                <h1 class="text-slate-700 text-[0.65rem]">{{auth()->user()->email}}</h1>
-            </div>
+    }" 
+    x-on:keydown.escape.prevent.stop="close($refs.button)"
+    x-on:focusin.window="! $refs.panel.contains($event.target) && close()" 
+    x-id="['notification-dropdown-button']">
+    <div>
+        <button 
+            x-ref="button" 
+            x-on:click="toggle()" 
+            type="button"
+            :class="open && 'ring-ascent ring-4'"
+            class="h-[40px] w-[40px] hover:bg-complement rounded-lg flex items-center justify-center transition duration-300 ease-in-out hover:ease-in-out border border-gray-200">
+            <i data-feather="bell" class="h-4 w-4 stroke-ascent-dark stroke-[3px]"></i>
         </button>
-
-        <hr />
-
-        <ul class="flex flex-col space-y-3">
-            <li>
-                <a href="{{--route('view.student.setting')--}}"
-                    class="text-xs font-medium text-slate-800 hover:text-admin-ascent-dark whitespace-nowrap flex items-center justify-start">
-                    <i data-feather="settings" class="mr-2 h-5 w-5"></i> Account Settings
-                </a>
-            </li>
-            <li>
-                <a onclick="handleLogout()"
-                    class="text-xs font-medium text-slate-800 hover:text-admin-ascent-dark whitespace-nowrap flex items-center justify-start cursor-pointer">
-                    <i data-feather="log-out" class="mr-2 h-5 w-5"></i> Logout
-                </a>
-                <script>
-                    function handleLogout() {
-                        swal({
-                                title: "Are you sure?",
-                                text: "Once you clicked you will logged out!",
-                                icon: "warning",
-                                buttons: true,
-                                dangerMode: true,
-                            })
-                            .then((willDelete) => {
-                                if (willDelete) {
-                                    $('#logout-form').submit();
-                                }
-                            });
-                    }
-                </script>
-            </li>
-        </ul>
-
+    </div>
+    <div 
+        x-ref="panel" 
+        x-show="open" 
+        x-transition.origin.top.right x-on:click.outside="close($refs.button)"
+        :id="$id('notification-dropdown-button')" 
+        style="display: none;"
+        class="absolute lg:-right-2 md:-right-2 sm:-right-14 z-10 mt-4 md:w-auto sm:w-fit origin-top-right rounded-xl bg-white shadow-lg overflow-clip text-left border">
+        <div class="border-b p-5 flex items-center space-x-12 justify-between">
+            <div>
+                <h1 class="text-base font-semibold">Notifications</h1>
+                <p class="text-xs text-slate-500 whitespace-nowrap" id="notification-status-message"></p>
+            </div>
+            <div>
+                <button onclick="markAllNotificationAsRead()" id="notification-mark-as-read-button" class="font-medium text-sm whitespace-nowrap text-ascent hover:text-ascent-dark">Mark all as read</button>
+            </div>
+        </div>
+        <div class="max-h-[400px] overflow-y-auto" id="notification-list">
+            
+        </div>
+        <div class="p-5 flex items-center space-x-12 justify-between">
+            <a href="{{--route('vendor.view.notification.list')--}}" class="link text-sm flex items-start justify-center w-fit space-x-1">
+                <span>View all notifications</span>
+                <i data-feather="external-link" class="h-3.5 w-3.5 mt-0.5"></i>
+            </a>
+        </div>
     </div>
 </div>
