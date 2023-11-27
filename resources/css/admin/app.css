@@ -333,7 +333,7 @@ section#panel-section {
     }   
 }
 .sidebar-tab svg {
-    @apply h-[25px] w-[20px] stroke-[1px] mb-0.5 stroke-[#A3AED0]
+    @apply h-[25px] w-[20px] stroke-[2.5px] mb-0.5 stroke-[#A3AED0]
 }
 .sidebar-tab > a {
     @apply flex space-x-2 w-full pl-7 pr-10 py-3 items-center relative font-medium text-[#A3AED0] hover:bg-complement whitespace-nowrap

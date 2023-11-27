@@ -99,8 +99,11 @@ class CategoryController extends Controller implements CategoryInterface
                 ]);
             }
 
+            $categories = Category::all();
+
             return view('admin.pages.category.category-update', [
-                'category' => $category
+                'category' => $category,
+                'categories' => $categories
             ]);
         } catch (Exception $exception) {
             return redirect()->back()->with('message', [
@@ -126,7 +129,7 @@ class CategoryController extends Controller implements CategoryInterface
                 'slug' => ['nullable', 'string', 'min:1', 'max:500', 'unique:categories'],
                 'summary' => ['nullable', 'string', 'min:1', 'max:500'],
                 'description' => ['nullable', 'string', 'min:1', 'max:1000'],
-                'thumbnail' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp'],
+                'thumbnail_image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp'],
                 'cover_image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp'],
                 'priority' => ['nullable', 'numeric']
             ]);
@@ -140,11 +143,15 @@ class CategoryController extends Controller implements CategoryInterface
             $category->name = $request->input('name');
             $category->summary = $request->input('summary');
             $category->description = $request->input('description');
-            $category->thumbnail = $request->file('thumbnail')->store('categories');
-            $category->cover_image = $request->file('cover_image')->store('categories');
+            if ($request->hasFile('thumbnail_image')) {
+                $category->thumbnail_image = $request->file('thumbnail_image')->store('categories');
+            }
+            if ($request->hasFile('cover_image')) {
+                $category->cover_image = $request->file('cover_image')->store('categories');
+            }
             $category->priority = $request->input('priority');
 
-            if ($request->has('slug'))
+            if ($request->input('slug'))
                 $category->slug = $request->input('slug');
             else
                 $category->slug = Str::random(64);
@@ -196,7 +203,7 @@ class CategoryController extends Controller implements CategoryInterface
                 ],
                 'summary' => ['nullable', 'string', 'min:1', 'max:500'],
                 'description' => ['nullable', 'string', 'min:1', 'max:1000'],
-                'thumbnail' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp'],
+                'thumbnail_image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp'],
                 'cover_image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp'],
                 'priority' => ['nullable', 'numeric']
             ]);
@@ -210,10 +217,10 @@ class CategoryController extends Controller implements CategoryInterface
             $category->slug = $request->input('slug');
             $category->summary = $request->input('summary');
             $category->description = $request->input('description');
-            if ($request->hasFile('thumbnail')) {
-                if ($category->thumbnail)
-                    Storage::delete($category->thumbnail);
-                $category->thumbnail = $request->file('thumbnail')->store('categories');
+            if ($request->hasFile('thumbnail_image')) {
+                if ($category->thumbnail_image)
+                    Storage::delete($category->thumbnail_image);
+                $category->thumbnail_image = $request->file('thumbnail_image')->store('categories');
             }
             if ($request->hasFile('cover_image')) {
                 if ($category->cover_image)
