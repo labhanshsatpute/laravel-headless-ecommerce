@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Events\User\UserRegistred;
+use App\Events\User\Registred;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Exception;
@@ -122,7 +122,7 @@ class AuthController extends Controller implements AuthInterface
 
             $token = $user->createToken($request->input('password'))->plainTextToken;
 
-            Event::dispatch(new UserRegistred($user));
+            Event::dispatch(new Registred($user));
 
             return $this->sendResponseCreated("Successfully registred", [
                 'token' => $token,

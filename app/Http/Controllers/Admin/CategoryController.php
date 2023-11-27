@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Exception;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 
 interface CategoryInterface
 {
@@ -115,11 +117,11 @@ class CategoryController extends Controller implements CategoryInterface
     }
 
     /**
-     * Create Category
+     * Handle Create Category
      *
-     * @return mixed
+     * @return RedirectResponse
      */
-    public function handleCategoryCreate(Request $request): mixed
+    public function handleCategoryCreate(Request $request): RedirectResponse
     {
         try {
 
@@ -173,11 +175,11 @@ class CategoryController extends Controller implements CategoryInterface
     }
 
     /**
-     * Update Category
+     * Handle Update Category
      *
-     * @return mixed
+     * @return RedirectResponse
      */
-    public function handleCategoryUpdate(Request $request, $id): mixed
+    public function handleCategoryUpdate(Request $request, $id): RedirectResponse
     {
         try {
 
@@ -245,11 +247,11 @@ class CategoryController extends Controller implements CategoryInterface
     }
 
     /**
-     * Toggle Category Status
+     * Handle Toggle Category Status
      *
-     * @return mixed
+     * @return Response
      */
-    public function handleToggleCategoryStatus(Request $request): mixed
+    public function handleToggleCategoryStatus(Request $request): Response
     {
         try {
 
@@ -262,7 +264,7 @@ class CategoryController extends Controller implements CategoryInterface
                     'status' => false,
                     'message' => $validation->errors()->first(),
                     'error' => $validation->errors()->getMessages()
-                ], 200);
+                ], Response::HTTP_OK);
             }
 
             $category = Category::find($request->input('category_id'));
@@ -273,22 +275,22 @@ class CategoryController extends Controller implements CategoryInterface
                 'status' => true,
                 'message' => "Status successfully updated",
                 'data' => $category
-            ], 200);
+            ], Response::HTTP_OK);
         } catch (Exception $exception) {
             return response([
                 'status' => false,
                 'message' => "An error occcured",
                 'error' => $exception->getMessage()
-            ], 500);
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
-     * Delete Category
+     * Handle Delete Category
      *
-     * @return mixed
+     * @return RedirectResponse
      */
-    public function handleCategoryDelete($id): mixed
+    public function handleCategoryDelete($id): RedirectResponse
     {
         try {
 

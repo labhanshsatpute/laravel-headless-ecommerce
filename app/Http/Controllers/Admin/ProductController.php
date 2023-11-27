@@ -10,7 +10,9 @@ use App\Models\ProductMedia;
 use App\Models\ProductSize;
 use App\Models\ProductVariant;
 use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Support\Facades\Validator;
@@ -24,7 +26,7 @@ interface ProductInterface
     public function viewProductUpdate($id);
     public function handleProductCreate(Request $request);
     public function handleProductUpdate(Request $request, $id);
-    public function handleToggleProducttatus(Request $request);
+    public function handleToggleProductstatus(Request $request);
     public function handleProductDelete($id);
 }
 
@@ -124,11 +126,11 @@ class ProductController extends Controller implements ProductInterface
     }
 
     /**
-     * Create Product
+     * Handle Create Product
      *
-     * @return mixed
+     * @return RedirectResponse
      */
-    public function handleProductCreate(Request $request): mixed
+    public function handleProductCreate(Request $request): RedirectResponse
     {
         try {
 
@@ -269,11 +271,11 @@ class ProductController extends Controller implements ProductInterface
     }
 
     /**
-     * Update Product
+     * Handle Update Product
      *
-     * @return mixed
+     * @return RedirectResponse
      */
-    public function handleProductUpdate(Request $request, $id): mixed
+    public function handleProductUpdate(Request $request, $id): RedirectResponse
     {
         try {
 
@@ -437,11 +439,11 @@ class ProductController extends Controller implements ProductInterface
     }
 
     /**
-     * Toggle Product Status
+     * Handle Toggle Product Status
      *
-     * @return mixed
+     * @return Response
      */
-    public function handleToggleProducttatus(Request $request): mixed
+    public function handleToggleProductstatus(Request $request): Response
     {
         try {
 
@@ -465,22 +467,22 @@ class ProductController extends Controller implements ProductInterface
                 'status' => true,
                 'message' => "Status successfully updated",
                 'data' => $product
-            ], 200);
+            ], Response::HTTP_OK);
         } catch (Exception $exception) {
             return response([
                 'status' => false,
                 'message' => "An error occcured",
                 'error' => $exception->getMessage()
-            ], 500);
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
-     * Delete Product
+     * Handle Delete Product
      *
-     * @return mixed
+     * @return RedirectResponse
      */
-    public function handleProductDelete($id): mixed
+    public function handleProductDelete($id): RedirectResponse
     {
         try {
 
