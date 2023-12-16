@@ -10,4 +10,25 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Product extends Model
 {
     use HasFactory, SoftDeletes, Uuid;
+
+    function parent_category() {
+        return $this->hasOne(Category::class, 'id', 'parent_category_id');
+    }
+
+    function child_category() {
+        return $this->hasOne(Category::class, 'id', 'parent_category_id');
+    }
+
+    function media() {
+        return $this->hasMany(ProductMedia::class);
+    }
+
+    function sizes() {
+        return $this->hasMany(ProductSize::class);
+    }
+
+    function variants() {
+        return $this->hasMany(ProductVariant::class);
+    }
+
 }

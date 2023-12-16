@@ -159,7 +159,7 @@ input[type=file] {
 }
 
 .input-radio label {
-    @apply font-medium text-slate-800 text-xs cursor-pointer
+    @apply font-medium text-slate-800 text-sm cursor-pointer whitespace-nowrap
 }
 
 input:not(.peer)[type=checkbox] {

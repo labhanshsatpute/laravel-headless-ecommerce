@@ -13,6 +13,7 @@ use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Support\Facades\Validator;
@@ -26,7 +27,7 @@ interface ProductInterface
     public function viewProductUpdate($id);
     public function handleProductCreate(Request $request);
     public function handleProductUpdate(Request $request, $id);
-    public function handleToggleProductstatus(Request $request);
+    public function handleToggleProductStatus(Request $request);
     public function handleProductDelete($id);
 }
 
@@ -52,9 +53,11 @@ class ProductController extends Controller implements ProductInterface
         try {
 
             $products = Product::all();
+            $availablity = ProductAvailability::class;
 
             return view('admin.pages.product.product-list', [
-                'products' => $products
+                'products' => $products,
+                'availablity' => $availablity
             ]);
         } catch (Exception $exception) {
             return redirect()->back()->with('message', [
@@ -75,11 +78,13 @@ class ProductController extends Controller implements ProductInterface
         try {
 
             $availablity = ProductAvailability::class;
-            $categories = Category::all();
+            $parent_categories = Category::where('category_id', null)->get();
+            $child_categories = Category::whereNot('category_id', null)->get();
 
             return view('admin.pages.product.product-create', [
                 'availablity' => $availablity,
-                'categories' => $categories
+                'parent_categories' => $parent_categories,
+                'child_categories' => $child_categories
             ]);
         } catch (Exception $exception) {
             return redirect()->back()->with('message', [
@@ -110,11 +115,13 @@ class ProductController extends Controller implements ProductInterface
             }
 
             $availablity = ProductAvailability::class;
-            $categories = Category::all();
+            $parent_categories = Category::where('category_id', null)->get();
+            $child_categories = Category::whereNot('category_id', null)->get();
 
             return view('admin.pages.product.product-update', [
                 'availablity' => $availablity,
-                'categories' => $categories
+                'parent_categories' => $parent_categories,
+                'child_categories' => $child_categories
             ]);
         } catch (Exception $exception) {
             return redirect()->back()->with('message', [
@@ -132,13 +139,14 @@ class ProductController extends Controller implements ProductInterface
      */
     public function handleProductCreate(Request $request): RedirectResponse
     {
+        DB::beginTransaction();
         try {
 
             $validator = Validator::make($request->all(), [
-                'parent_category_id' => ['required', 'numeric', 'exists:categories'],
-                'child_category_id' => ['nullable', 'numeric', 'exists:categories'],
+                'parent_category_id' => ['required', 'numeric', 'exists:categories,id'],
+                'child_category_id' => ['nullable', 'numeric', 'exists:categories,id'],
                 'name' => ['required', 'string', 'min:1', 'max:250'],
-                'sku' => ['required', 'string', 'min:1', 'max:250'],
+                'sku' => ['nullable', 'string', 'min:1', 'max:250'],
                 'slug' => ['nullable', 'string', 'min:1', 'max:500', 'unique:products'],
                 'summary' => ['nullable', 'string', 'min:1', 'max:500'],
                 'color' => ['nullable', 'string', 'min:1', 'max:20'],
@@ -161,7 +169,7 @@ class ProductController extends Controller implements ProductInterface
                 'price_discounted' => ['nullable', 'numeric', 'min:1', 'max:10000000'],
                 'tax_percentage' => ['nullable', 'numeric', 'min:0', 'max:100'],
                 'availability' => ['required', 'string', new Enum(ProductAvailability::class)],
-                'thumbnail' => ['required', 'file', 'mimes:png,jpg,jpeg,webp'],
+                'thumbnail_image' => ['required', 'file', 'mimes:png,jpg,jpeg,webp'],
                 'product_media' => ['nullable', 'array'],
                 'product_media.*' => ['required', 'file', 'mimes:png,jpg,jpeg,webp']
             ]);
@@ -184,7 +192,7 @@ class ProductController extends Controller implements ProductInterface
             $product->price_discounted = $request->input('price_discounted');
             $product->tax_percentage = $request->input('tax_percentage');
             $product->availability = $request->input('availability');
-            $product->thumbnail = $request->file('thumbnail')->store('products');
+            $product->thumbnail_image = $request->file('thumbnail_image')->store('products');
 
             if ($request->input('slug'))
                 $product->slug = $request->input('slug');
@@ -248,7 +256,7 @@ class ProductController extends Controller implements ProductInterface
                     if ($request->hasFile('product_media')) {
                         $product_media = new ProductMedia();
                         $product_media->product_id = $product->id;
-                        $product_media->priority = $request->input('product_media_priority')[$key];
+                        // $product_media->priority = $request->input('product_media_priority')[$key];
                         $product_media->type = $file->getMimeType();
                         $product_media->path = $file->store('products');
                         $product_media->save();
@@ -256,12 +264,17 @@ class ProductController extends Controller implements ProductInterface
                 }
             }
 
+            DB::commit();
+
             return redirect()->route('admin.view.product.list')->with('message', [
                 'status' => 'success',
                 'title' => 'Product created',
                 'description' => 'The product is successfully created.'
             ]);
         } catch (Exception $exception) {
+
+            DB::rollBack();
+
             return redirect()->back()->with('message', [
                 'status' => 'error',
                 'title' => 'An error occcured',
@@ -290,8 +303,8 @@ class ProductController extends Controller implements ProductInterface
             }
 
             $validator = Validator::make($request->all(), [
-                'parent_category_id' => ['required', 'numeric', 'exists:categories'],
-                'child_category_id' => ['nullable', 'numeric', 'exists:categories'],
+                'parent_category_id' => ['required', 'numeric', 'exists:categories,id'],
+                'child_category_id' => ['nullable', 'numeric', 'exists:categories,id'],
                 'name' => ['required', 'string', 'min:1', 'max:250'],
                 'sku' => ['required', 'string', 'min:1', 'max:250'],
                 'slug' => ['required', 'string', 'min:1', 'max:500', Rule::unique('products')->ignore($product->slug, 'slug')],
@@ -316,7 +329,7 @@ class ProductController extends Controller implements ProductInterface
                 'price_discounted' => ['nullable', 'numeric', 'min:1', 'max:10000000'],
                 'tax_percentage' => ['nullable', 'numeric', 'min:0', 'max:100'],
                 'availability' => ['required', 'string', new Enum(ProductAvailability::class)],
-                'thumbnail' => ['required', 'file', 'mimes:png,jpg,jpeg,webp'],
+                'thumbnail_image' => ['required', 'file', 'mimes:png,jpg,jpeg,webp'],
                 'product_media' => ['nullable', 'array'],
                 'product_media.*' => ['required', 'file', 'mimes:png,jpg,jpeg,webp']
             ]);
@@ -340,10 +353,10 @@ class ProductController extends Controller implements ProductInterface
             $product->tax_percentage = $request->input('tax_percentage');
             $product->availability = $request->input('availability');
 
-            if ($request->hasFile('thumbnail')) {
-                if ($product->thumbnail)
-                    Storage::delete($product->thumbnail);
-                $product->thumbnail = $request->file('thumbnail')->store('products');
+            if ($request->hasFile('thumbnail_image')) {
+                if ($product->thumbnail_image)
+                    Storage::delete($product->thumbnail_image);
+                $product->thumbnail_image = $request->file('thumbnail_image')->store('products');
             }
 
             if ($request->input('highlights')) {
@@ -416,7 +429,7 @@ class ProductController extends Controller implements ProductInterface
                     if ($request->hasFile('product_media')) {
                         $product_media = new ProductMedia();
                         $product_media->product_id = $product->id;
-                        $product_media->priority = $request->input('product_media_priority')[$key];
+                        // $product_media->priority = $request->input('product_media_priority')[$key];
                         $product_media->type = $file->getMimeType();
                         $product_media->path = $file->store('products');
                         $product_media->save();
@@ -443,7 +456,7 @@ class ProductController extends Controller implements ProductInterface
      *
      * @return Response
      */
-    public function handleToggleProductstatus(Request $request): Response
+    public function handleToggleProductStatus(Request $request): Response
     {
         try {
 

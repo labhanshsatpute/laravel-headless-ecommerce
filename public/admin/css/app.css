@@ -2158,6 +2158,9 @@ main{
 .hidden{
   display: none;
 }
+.h-12{
+  height: 3rem;
+}
 .h-16{
   height: 4rem;
 }
@@ -2206,11 +2209,21 @@ main{
 .h-screen{
   height: 100vh;
 }
+.h-auto{
+  height: auto;
+}
+.h-fit{
+  height: -moz-fit-content;
+  height: fit-content;
+}
 .max-h-\[400px\]{
   max-height: 400px;
 }
 .min-h-screen{
   min-height: 100vh;
+}
+.w-12{
+  width: 3rem;
 }
 .w-16{
   width: 4rem;
@@ -2402,6 +2415,12 @@ main{
 }
 .rounded-xl{
   border-radius: 0.75rem;
+}
+.rounded{
+  border-radius: 0.25rem;
+}
+.rounded-md{
+  border-radius: 0.375rem;
 }
 .rounded-l-lg{
   border-top-left-radius: 0.5rem;
@@ -3272,8 +3291,9 @@ input[type=file]{
 
 .input-radio label{
   cursor: pointer;
-  font-size: 0.75rem;
-  line-height: 1rem;
+  white-space: nowrap;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   font-weight: 500;
   --tw-text-opacity: 1;
   color: rgb(30 41 59 / var(--tw-text-opacity));
@@ -4913,6 +4933,10 @@ table.dataTable thead th, table.dataTable thead td {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 
+  .sm\:grid-cols-2{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .sm\:flex-row-reverse{
     flex-direction: row-reverse;
   }
@@ -5088,6 +5112,10 @@ table.dataTable thead th, table.dataTable thead td {
 }
 
 @media (min-width: 1536px){
+
+  .\32xl\:col-span-3{
+    grid-column: span 3 / span 3;
+  }
 
   .\32xl\:col-span-5{
     grid-column: span 5 / span 5;
