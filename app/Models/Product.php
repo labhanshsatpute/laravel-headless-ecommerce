@@ -16,7 +16,7 @@ class Product extends Model
     }
 
     function child_category() {
-        return $this->hasOne(Category::class, 'id', 'parent_category_id');
+        return $this->hasOne(Category::class, 'id', 'child_category_id');
     }
 
     function media() {
