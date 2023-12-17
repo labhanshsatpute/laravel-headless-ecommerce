@@ -285,11 +285,10 @@
 
                     {{-- Thumbnail --}}
                     <div class="input-group 2xl:col-span-5 lg:col-span-4 md:col-span-2 sm:col-span-1">
-                        <label for="thumbnail_image" class="input-label">Thumbnail <span>(Format: png, jpg, jpeg,
-                                webp)</span> <em>*</em></label>
+                        <label for="thumbnail_image" class="input-label">Thumbnail <span>(Format: png, jpg, jpeg, webp, avif)</span> <em>*</em></label>
                         <div class="flex space-x-3 my-2">
                             <div class="input-box-dragable">
-                                <input type="file" accept="image/jpeg, image/jpg, image/png, image/webp"
+                                <input type="file" accept="image/jpeg, image/jpg, image/png, image/webp, image/avif"
                                     onchange="handleThumbnailPreview(event)" name="thumbnail_image" required>
                                 <i data-feather="upload-cloud"></i>
                                 <span>Darg and Drop Image Files</span>

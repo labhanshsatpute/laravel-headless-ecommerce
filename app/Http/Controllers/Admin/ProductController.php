@@ -170,9 +170,9 @@ class ProductController extends Controller implements ProductInterface
                 'price_discounted' => ['nullable', 'numeric', 'min:1', 'max:10000000'],
                 'tax_percentage' => ['nullable', 'numeric', 'min:0', 'max:100'],
                 'availability' => ['required', 'string', new Enum(ProductAvailability::class)],
-                'thumbnail_image' => ['required', 'file', 'mimes:png,jpg,jpeg,webp'],
+                'thumbnail_image' => ['required', 'file', 'mimes:png,jpg,jpeg,webp,avif'],
                 'product_media' => ['nullable', 'array'],
-                'product_media.*' => ['required', 'file', 'mimes:png,jpg,jpeg,webp']
+                'product_media.*' => ['required', 'file', 'mimes:png,jpg,jpeg,webp,avif']
             ]);
 
             if ($validator->fails()) {
@@ -330,9 +330,9 @@ class ProductController extends Controller implements ProductInterface
                 'price_discounted' => ['nullable', 'numeric', 'min:1', 'max:10000000'],
                 'tax_percentage' => ['nullable', 'numeric', 'min:0', 'max:100'],
                 'availability' => ['required', 'string', new Enum(ProductAvailability::class)],
-                'thumbnail_image' => ['nullable', 'file', 'mimes:png,jpg,jpeg,webp'],
+                'thumbnail_image' => ['nullable', 'file', 'mimes:png,jpg,jpeg,webp,avif'],
                 'product_media' => ['nullable', 'array'],
-                'product_media.*' => ['required', 'file', 'mimes:png,jpg,jpeg,webp']
+                'product_media.*' => ['required', 'file', 'mimes:png,jpg,jpeg,webp,avif']
             ]);
 
             if ($validator->fails()) {
