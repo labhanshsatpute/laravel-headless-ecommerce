@@ -15,6 +15,7 @@ class ProductMediaResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            "id" => $this->id,
             "priority" => $this->size,
             "type" => $this->type,
             "path" => asset('storage/'. $this->path)
