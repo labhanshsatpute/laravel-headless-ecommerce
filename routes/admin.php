@@ -76,6 +76,8 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::post('/update/{id}', 'handleProductUpdate')->name('admin.handle.product.update');
         Route::put('/status', 'handleToggleProductStatus')->name('admin.handle.product.status');
         Route::get('/delete/{id}', 'handleProductDelete')->name('admin.handle.product.delete');
+        Route::get('/size/delete/{id}', 'handleProductSizeDelete')->name('admin.handle.product.size.delete');
+        Route::get('/media/delete/{id}', 'handleProductMediaDelete')->name('admin.handle.product.media.delete');
     });
 
     Route::prefix('category')->controller(CategoryController::class)->group(function () {

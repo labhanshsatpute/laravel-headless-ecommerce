@@ -31,9 +31,9 @@
                     <thead>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>SKU</th>
                         <th>Category</th>
                         <th>Price</th>
+                        <th>Availability</th>
                         <th>Status</th>
                         <th>Action</th>
                     </thead>
@@ -42,8 +42,15 @@
                             <tr>
                                 <td>{{ $product->id }}</td>
                                 <td>{{ $product->name }}</td>
-                                <td>{{ $product->sku }}</td>
                                 <td>{{ $product->parent_category->name }}</td>
+                                <td class="space-x-1">
+                                    @if (is_null($product->price_discounted))
+                                    <span>{{ config('app.currency.symbol') . round($product->price_original,0) }}</span>
+                                    @else
+                                    <span>{{ config('app.currency.symbol'). round($product->price_discounted, 0) }}</span>
+                                    <span class="line-through">{{ config('app.currency.symbol'). round($product->price_original, 0) }}</span>
+                                    @endif
+                                </td>
                                 <td>
                                     @switch($product->availability)
                                         @case($availablity::IN_STOCK->value)

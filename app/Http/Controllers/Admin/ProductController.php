@@ -119,6 +119,7 @@ class ProductController extends Controller implements ProductInterface
             $child_categories = Category::whereNot('category_id', null)->get();
 
             return view('admin.pages.product.product-update', [
+                'product' => $product,
                 'availablity' => $availablity,
                 'parent_categories' => $parent_categories,
                 'child_categories' => $child_categories
@@ -329,7 +330,7 @@ class ProductController extends Controller implements ProductInterface
                 'price_discounted' => ['nullable', 'numeric', 'min:1', 'max:10000000'],
                 'tax_percentage' => ['nullable', 'numeric', 'min:0', 'max:100'],
                 'availability' => ['required', 'string', new Enum(ProductAvailability::class)],
-                'thumbnail_image' => ['required', 'file', 'mimes:png,jpg,jpeg,webp'],
+                'thumbnail_image' => ['nullable', 'file', 'mimes:png,jpg,jpeg,webp'],
                 'product_media' => ['nullable', 'array'],
                 'product_media.*' => ['required', 'file', 'mimes:png,jpg,jpeg,webp']
             ]);
@@ -400,8 +401,10 @@ class ProductController extends Controller implements ProductInterface
 
                     if (!$product_size) {
                         $product_size = new ProductSize();
+                        $product_size->product_id = $product->id;
                     }
-
+                    
+                    $product_size->size = $request->input('sizes_value')[$key];
                     $product_size->price_original = $request->input('sizes_price_original')[$key];
                     $product_size->price_discounted = $request->input('sizes_price_discounted')[$key];
                     $product_size->save();
@@ -437,7 +440,7 @@ class ProductController extends Controller implements ProductInterface
                 }
             }
 
-            return redirect()->route('admin.view.product.list')->with('message', [
+            return redirect()->back()->with('message', [
                 'status' => 'success',
                 'title' => 'Changes saved',
                 'description' => 'The changes are successfully saved.'
@@ -515,6 +518,78 @@ class ProductController extends Controller implements ProductInterface
                 'status' => 'success',
                 'title' => 'Product deleted',
                 'description' => 'The product is successfully deleted.'
+            ]);
+        } catch (Exception $exception) {
+            return redirect()->back()->with('message', [
+                'status' => 'error',
+                'title' => 'An error occcured',
+                'description' => $exception->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     * Handle Delete Product Size
+     *
+     * @return RedirectResponse
+     */
+    public function handleProductSizeDelete($id): RedirectResponse
+    {
+        try {
+
+            $product_size = ProductSize::find($id);
+
+            if (!$product_size) {
+                return redirect()->back()->with('message', [
+                    'status' => 'warning',
+                    'title' => 'Product size not found',
+                    'description' => 'Product size not found with specified ID'
+                ]);
+            }
+
+            $product_size->delete();
+
+            return redirect()->back()->with('message',[
+                'status' => 'success',
+                'title' => 'Size Deleted',
+                'description' => 'The product size is successfully deleted'
+            ]);
+        } catch (Exception $exception) {
+            return redirect()->back()->with('message', [
+                'status' => 'error',
+                'title' => 'An error occcured',
+                'description' => $exception->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     * Handle Delete Product Media
+     *
+     * @return RedirectResponse
+     */
+    public function handleProductMediaDelete($id): RedirectResponse
+    {
+        try {
+
+            $product_media = ProductMedia::find($id);
+
+            if (!$product_media) {
+                return redirect()->back()->with('message', [
+                    'status' => 'warning',
+                    'title' => 'Product media not found',
+                    'description' => 'Product media not found with specified ID'
+                ]);
+            }
+
+            Storage::delete($product_media->path);
+
+            $product_media->delete();
+
+            return redirect()->back()->with('message',[
+                'status' => 'success',
+                'title' => 'Media Deleted',
+                'description' => 'The product media is successfully deleted'
             ]);
         } catch (Exception $exception) {
             return redirect()->back()->with('message', [

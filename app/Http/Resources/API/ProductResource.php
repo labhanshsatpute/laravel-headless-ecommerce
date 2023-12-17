@@ -14,8 +14,6 @@ class ProductResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // return parent::toArray($request);
-
         return [
             'id' => $this->id,
             'uuid' => $this->uuid,
@@ -39,14 +37,14 @@ class ProductResource extends JsonResource
                 'name' => $this->parent_category->name,
                 'slug' => $this->parent_category->slug
             ],
-            'child_category' => [
+            'child_category' => is_null($this->child_category_id) ? null :  [
                 'id' => $this->child_category->id,
                 'name' => $this->child_category->name,
                 'slug' => $this->child_category->slug
             ],
-            'sizes' => $this->sizes,
-            'media' => $this->media,
-            'variants' => $this->variants
+            'sizes' => ProductSizeResource::collection($this->sizes),
+            'media' => ProductMediaResource::collection($this->media),
+            'variants' => ProductVariantResource::collection($this->variants)
         ];
         
     }

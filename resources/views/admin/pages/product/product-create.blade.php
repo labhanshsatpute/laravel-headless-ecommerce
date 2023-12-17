@@ -65,7 +65,7 @@
                     </div>
 
                     {{-- Parent Category --}}
-                    <div class="input-group">                    
+                    <div class="input-group">
                         <label for="parent_category_id" class="input-label">Parent Category <em>*</em></label>
                         <select name="parent_category_id"
                             class="input-box-md @error('parent_category_id') input-invalid @enderror" required>
@@ -146,7 +146,8 @@
 
                     {{-- Original Price --}}
                     <div class="input-group">
-                        <label for="price_original" class="input-label">Original Price <em>*</em> <span>(In {{config('app.currency.code')}})</span></label>
+                        <label for="price_original" class="input-label">Original Price <em>*</em> <span>(In
+                                {{ config('app.currency.code') }})</span></label>
                         <input type="number" step="any" name="price_original" value="{{ old('price_original') }}"
                             class="input-box-md @error('price_original') input-invalid @enderror"
                             placeholder="Enter Original Price" required min="0" max="1000000">
@@ -157,7 +158,8 @@
 
                     {{-- Discounted Price --}}
                     <div class="input-group">
-                        <label for="price_discounted" class="input-label">Discounted Price <span>(Optional)</span> <span>(In {{config('app.currency.code')}})</span></label>
+                        <label for="price_discounted" class="input-label">Discounted Price <span>(Optional)</span>
+                            <span>(In {{ config('app.currency.code') }})</span></label>
                         <input type="number" step="any" name="price_discounted"
                             value="{{ old('price_discounted') }}"
                             class="input-box-md @error('price_discounted') input-invalid @enderror"
@@ -169,7 +171,8 @@
 
                     {{-- Tax Percentage --}}
                     <div class="input-group">
-                        <label for="tax_percentage" class="input-label">Tax Percentage <span> (Optional)</span> <span>(In %)</span></label>
+                        <label for="tax_percentage" class="input-label">Tax Percentage <span> (Optional)</span> <span>(In
+                                %)</span></label>
                         <input type="number" step="any" name="tax_percentage" value="{{ old('tax_percentage') }}"
                             class="input-box-md @error('tax_percentage') input-invalid @enderror"
                             placeholder="Enter discounted price" min="0" max="100">
@@ -233,8 +236,8 @@
 
                     {{-- Color --}}
                     <div class="input-group">
-                        <label for="color" class="input-label">Color</label>
-                        <input type="color" name="color" value="{{old('color')}}" class="h-12 w-12">
+                        <label for="color" class="input-label">Color <span>(Optional)</span></label>
+                        <input type="color" name="color" value="{{ old('color') }}" class="h-12 w-12">
                         @error('color')
                             <span class="input-error">{{ $message }}</span>
                         @enderror
@@ -282,10 +285,12 @@
 
                     {{-- Thumbnail --}}
                     <div class="input-group 2xl:col-span-5 lg:col-span-4 md:col-span-2 sm:col-span-1">
-                        <label for="thumbnail_image" class="input-label">Thumbnail <span>(Format: png, jpg, jpeg, webp)</span> <em>*</em></label>
+                        <label for="thumbnail_image" class="input-label">Thumbnail <span>(Format: png, jpg, jpeg,
+                                webp)</span> <em>*</em></label>
                         <div class="flex space-x-3 my-2">
                             <div class="input-box-dragable">
-                                <input type="file" accept="image/jpeg, image/jpg, image/png, image/webp" onchange="handleThumbnailPreview(event)" name="thumbnail_image">
+                                <input type="file" accept="image/jpeg, image/jpg, image/png, image/webp"
+                                    onchange="handleThumbnailPreview(event)" name="thumbnail_image" required>
                                 <i data-feather="upload-cloud"></i>
                                 <span>Darg and Drop Image Files</span>
                             </div>
@@ -299,7 +304,8 @@
 
                     {{-- Product Media --}}
                     <div class="input-group 2xl:col-span-5 lg:col-span-4 md:col-span-2 sm:col-span-1">
-                        <label for="product_media" class="input-label">Media (Format: png, jpg, jpeg, webp, mp4, pdf)</label>
+                        <label for="product_media" class="input-label">Media (Format: png, jpg, jpeg, webp, mp4,
+                            pdf)</label>
                         <div class="space-y-2 my-2">
                             <div class="input-box-dragable">
                                 <input type="file" multiple onchange="handleMediaPreview(event)"
@@ -325,11 +331,11 @@
                     <div class="input-group 2xl:col-span-5 lg:col-span-4 md:col-span-2 sm:col-span-1">
                         <div class="space-x-3 flex">
                             @foreach ($availablity::cases() as $item)
-                            <div class="input-radio">
-                                <input type="radio" value="{{$item->value}}" @checked(old('availability') == $item->value) name="availability"
-                                    id="availability-{{$item->value}}" required>
-                                <label for="availability-{{$item->value}}">{{$item->label()}}</label>
-                            </div>
+                                <div class="input-radio">
+                                    <input type="radio" value="{{ $item->value }}" @checked(old('availability') == $item->value)
+                                        name="availability" id="availability-{{ $item->value }}" required>
+                                    <label for="availability-{{ $item->value }}">{{ $item->label() }}</label>
+                                </div>
                             @endforeach
                         </div>
                         @error('availability')
