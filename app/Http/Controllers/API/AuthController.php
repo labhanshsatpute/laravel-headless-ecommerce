@@ -14,21 +14,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 
-/*
-|--------------------------------------------------------------------------
-| API Auth Controller
-|--------------------------------------------------------------------------
-|
-| Authentication operations for user are handled from this controller.
-|
-*/
-
 interface AuthInterface
 {
     public function handleLogin(Request $request);
     public function handleRegister(Request $request);
-    // public function handleForgotPassword(Request $request);
-    // public function handleResetPassword(Request $request, $token);
 }
 
 class AuthController extends Controller implements AuthInterface
@@ -43,12 +32,12 @@ class AuthController extends Controller implements AuthInterface
         $this->middleware('guest')->except('logout');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Handle Login
-    |--------------------------------------------------------------------------
-    */
-    public function handleLogin(Request $request)
+    /**
+     * Handle Login
+     *
+     * @return Response
+     */
+    public function handleLogin(Request $request): Response
     {
         try {
 
@@ -72,8 +61,6 @@ class AuthController extends Controller implements AuthInterface
                     return $this->sendResponse(false, "Access is blocked", null, 200);
                 }
 
-                Auth::login($user);
-
                 $token = $user->createToken(Str::random(30))->plainTextToken;
 
                 return $this->sendResponseOk("Successfully logged in", [
@@ -87,16 +74,16 @@ class AuthController extends Controller implements AuthInterface
             ]);
 
         } catch (Exception $e) {
-            $this->sendExceptionError($e);
+            return $this->sendExceptionError($e);
         }
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Handle Register
-    |--------------------------------------------------------------------------
-    */
-    public function handleRegister(Request $request)
+    /**
+     * Handle Register
+     *
+     * @return Response
+     */
+    public function handleRegister(Request $request): Response
     {
         try {
 
@@ -122,15 +109,13 @@ class AuthController extends Controller implements AuthInterface
 
             $token = $user->createToken($request->input('password'))->plainTextToken;
 
-            Event::dispatch(new Registred($user));
-
             return $this->sendResponseCreated("Successfully registred", [
                 'token' => $token,
                 'user' => Auth::user()
             ]);
 
         } catch (Exception $e) {
-            $this->sendExceptionError($e);
+            return $this->sendExceptionError($e);
         }
     }
 }
