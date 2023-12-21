@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\ProductController;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,15 +18,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-
 Route::controller(CategoryController::class)->group(function() {
     Route::get('category', 'getCategories');
 });
-
 
 Route::controller(ProductController::class)->group(function() {
     Route::get('product', 'getProducts');
@@ -38,6 +33,16 @@ Route::prefix('user')->group(function () {
         Route::post('register', 'handleRegister');
         Route::post('forgot-password', 'handleForgotPassword');
         Route::post('reset-password', 'handleResetPassword');
+    });
+
+    Route::middleware(['auth:sanctum'])->group(function () {
+
+        Route::controller(UserController::class)->group(function() {
+            Route::get('/', 'handleGetUser');
+            Route::put('/', 'handleUpdateUserInformation');
+            Route::put('/password', 'handleUpdateUserPassword');
+        });
+
     });
 
 });
