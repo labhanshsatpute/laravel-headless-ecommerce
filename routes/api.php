@@ -39,8 +39,8 @@ Route::prefix('user')->group(function () {
 
         Route::controller(UserController::class)->group(function() {
             Route::get('/', 'handleGetUser');
-            Route::put('/', 'handleUpdateUserInformation');
-            Route::put('/password', 'handleUpdateUserPassword');
+            Route::post('/update/details', 'handleUpdateUserDetails');
+            Route::post('/update/password', 'handleUpdateUserPassword');
         });
 
     });

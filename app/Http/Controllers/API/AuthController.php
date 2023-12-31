@@ -65,7 +65,16 @@ class AuthController extends Controller implements AuthInterface
 
                 return $this->sendResponseOk("Successfully logged in", [
                     'token' => $token,
-                    'user' => Auth::user()
+                    'user' => [
+                        'id' => auth()->user()->id,
+                        'uuid' => auth()->user()->uuid,
+                        'name' => auth()->user()->name,
+                        'email' => auth()->user()->email,
+                        'phone' => auth()->user()->phone,
+                        'gender' => auth()->user()->gender,
+                        'date_of_birth' => auth()->user()->date_of_birth,
+                        'profile_image' => is_null(auth()->user()->profile_image) ? null : asset('storage/'.auth()->user()->profile_image)
+                    ]
                 ]);
             }
 
@@ -103,6 +112,7 @@ class AuthController extends Controller implements AuthInterface
             $user->phone = $request->input('phone');
             $user->email = $request->input('email');
             $user->password = Hash::make($request->input('password'));
+            $user->generateUserProfile();
             $user->save();
 
             Auth::login($user);
@@ -111,7 +121,16 @@ class AuthController extends Controller implements AuthInterface
 
             return $this->sendResponseCreated("Successfully registred", [
                 'token' => $token,
-                'user' => Auth::user()
+                'user' => [
+                    'id' => auth()->user()->id,
+                    'uuid' => auth()->user()->uuid,
+                    'name' => auth()->user()->name,
+                    'email' => auth()->user()->email,
+                    'phone' => auth()->user()->phone,
+                    'gender' => auth()->user()->gender,
+                    'date_of_birth' => auth()->user()->date_of_birth,
+                    'profile_image' => is_null(auth()->user()->profile_image) ? null : asset('storage/'.auth()->user()->profile_image)
+                ]
             ]);
 
         } catch (Exception $e) {

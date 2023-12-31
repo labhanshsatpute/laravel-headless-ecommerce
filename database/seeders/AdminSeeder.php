@@ -18,7 +18,7 @@ class AdminSeeder extends Seeder
             ->where('phone', config('app.admin.phone'))
             ->doesntExist();
 
-        if ($$admin_dosent_exists) {
+        if ($admin_dosent_exists) {
             $admin = new Admin();
             $admin->name = config('app.admin.name');
             $admin->email = config('app.admin.email');

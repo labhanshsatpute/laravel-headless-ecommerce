@@ -17,7 +17,8 @@ use Illuminate\Validation\Rules\Enum;
 interface UserInterface
 {
     public function handleGetUser();
-    public function handleUpdateUserInformation(Request $request);
+    public function handleUpdateUserDetails(Request $request);
+    public function handleUpdateUserPassword(Request $request);
 }
 
 class UserController extends Controller implements UserInterface
@@ -41,18 +42,27 @@ class UserController extends Controller implements UserInterface
     {
         try {
 
-            return $this->sendResponseOk("User successfully fetch", auth()->user());
+            return $this->sendResponseOk("User successfully fetch", [
+                'id' => auth()->user()->id,
+                'uuid' => auth()->user()->uuid,
+                'name' => auth()->user()->name,
+                'email' => auth()->user()->email,
+                'phone' => auth()->user()->phone,
+                'gender' => auth()->user()->gender,
+                'date_of_birth' => auth()->user()->date_of_birth,
+                'profile_image' => is_null(auth()->user()->profile_image) ? null : asset('storage/'.auth()->user()->profile_image)
+            ]);
         } catch (Exception $exception) {
             return $this->sendExceptionError($exception);
         }
     }
 
     /**
-     * Handle Update User Information
+     * Handle Update User Details
      *
      * @return Response
      */
-    public function handleUpdateUserInformation(Request $request): Response
+    public function handleUpdateUserDetails(Request $request): Response
     {
         try {
 
@@ -90,7 +100,16 @@ class UserController extends Controller implements UserInterface
                 }
                 $user->update();
 
-                return $this->sendResponseOk("Successfully updated", auth()->user());
+                return $this->sendResponseOk("Successfully updated", [
+                    'id' => auth()->user()->id,
+                    'uuid' => auth()->user()->uuid,
+                    'name' => auth()->user()->name,
+                    'email' => auth()->user()->email,
+                    'phone' => auth()->user()->phone,
+                    'gender' => auth()->user()->gender,
+                    'date_of_birth' => auth()->user()->date_of_birth,
+                    'profile_image' => is_null(auth()->user()->profile_image) ? null : asset('storage/'.auth()->user()->profile_image)
+                ]);
             }
 
             return  $this->sendValidationError("Incorrect password", [
